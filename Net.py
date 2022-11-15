@@ -8,8 +8,11 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import os
+import gc
 
-root = r"/home/kevin/桌面/Summer_Intern_Article1/Landmarks/Dataset/WFLW/WFLW_annotations/list_98pt_rect_attr_train_test"
+
+
+root = r"/home/qufy620331060/qufy6_project/Landmarks/Dataset/WFLW/WFLW_annotations/list_98pt_rect_attr_train_test"
 EPOCH = 30
 BATCH_SIZE = 15
 LR = 1E-3
@@ -96,7 +99,8 @@ class ResNet18(nn.Module):
         return out
 
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
+#device = torch.device("cuda:0")
 net = ResNet18().to(device)
 
 criterion = nn.MSELoss()
@@ -108,8 +112,8 @@ for i in range(EPOCH):
     print('第', i + 1, '轮迭代：')
     Sum = 0.
     for step, (data, targets) in enumerate(train_loader):
-        data = data.type(torch.FloatTensor).cuda()
-        targets = targets.type(torch.FloatTensor).cuda()
+        data = data.type(torch.FloatTensor).to(device)
+        targets = targets.type(torch.FloatTensor).to(device)
         optimizer.zero_grad()  # 把梯度清零
         TrainOutput = net(data)  # 进行一次前向传播
         TrainOutput = TrainOutput.requires_grad_(True)
@@ -123,26 +127,25 @@ for i in range(EPOCH):
     print('第', i + 1, '轮迭代：train finished')
     correct = 0
     for step, (data, targets) in enumerate(test_loader):
+        
+        data = data.type(torch.FloatTensor).to(device)
+        targets = targets.type(torch.FloatTensor).to(device)
         acc = 0.
         TestOutput = net(data)  # <class 'torch.Tensor'>,torch.Size([1, 10])
 
-        TestOutput = TestOutput[0].detach().numpy()
+        TestOutput = TestOutput[0].cpu().detach().numpy()
         TestOutput = torch.tensor(TestOutput.argmax(0))
 
-        if TestOutput == targets[0]:
-            correct += 1
-    acc = correct / len(test_loader)
-    print('第', i + 1, '轮迭代正确率：', acc)
-    TestRate.append(acc)
+        TestOutput = np.array(TestOutput)
+        np.save('Testout%d.npy'%(i+1), TestOutput)
+
     print('第', i + 1, '轮迭代loss = ', Sum / len(train_loader))
     TrainLoss.append(Sum / len(train_loader))
+    
 
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 
 print('TrainLoss', TrainLoss)
-print('TestRate:', TestRate)
 
 l = plt.plot(list(range(EPOCH)), TrainLoss, 'r--')
-plt.show()
-l2 = plt.plot(list(range(EPOCH)), TestRate, 'g--')
 plt.show()
