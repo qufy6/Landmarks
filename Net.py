@@ -37,7 +37,6 @@ test_loader = Loader.DataLoader(dataset=test_landmarks, batch_size=BATCH_SIZE, s
 class ResBlock(nn.Module):
     def __init__(self, inchannel, outchannel, stride=1):
         super(ResBlock, self).__init__()
-        # 这里定义了残差块内连续的2个卷积层
         self.left = nn.Sequential(
             nn.Conv2d(inchannel, outchannel, kernel_size=3, stride=stride, padding=1, bias=False),
             nn.BatchNorm2d(outchannel),
@@ -47,7 +46,6 @@ class ResBlock(nn.Module):
         )
         self.shortcut = nn.Sequential()
         if stride != 1 or inchannel != outchannel:
-            # shortcut，这里为了跟2个卷积层的结果结构一致，要做处理
             self.shortcut = nn.Sequential(
                 nn.Conv2d(inchannel, outchannel, kernel_size=1, stride=stride, bias=False),
                 nn.BatchNorm2d(outchannel)
@@ -55,7 +53,6 @@ class ResBlock(nn.Module):
 
     def forward(self, x):
         out = self.left(x)
-        # 将2个卷积层的输出跟处理过的x相加，实现ResNet的基本结构
         out = out + self.shortcut(x)
         out = F.relu(out)
 
@@ -109,22 +106,22 @@ TrainLoss = []
 TestRate = []
 
 for i in range(EPOCH):
-    print('第', i + 1, '轮迭代：')
+    print('The', i + 1, 'iteration：')
     Sum = 0.
     for step, (data, targets) in enumerate(train_loader):
         data = data.type(torch.FloatTensor).to(device)
         targets = targets.type(torch.FloatTensor).to(device)
-        optimizer.zero_grad()  # 把梯度清零
-        TrainOutput = net(data)  # 进行一次前向传播
+        optimizer.zero_grad()  
+        TrainOutput = net(data)  
         TrainOutput = TrainOutput.requires_grad_(True)
-        lossTRN = criterion(TrainOutput, targets)  # 计算误差
+        lossTRN = criterion(TrainOutput, targets)  
         lossTRN.requires_grad_(True)
         Sum += lossTRN.cpu().data.detach().numpy()
 
-        lossTRN.backward()  # 后向传播
+        lossTRN.backward()  
 
-        optimizer.step()  # 进行一次参数更新
-    print('第', i + 1, '轮迭代：train finished')
+        optimizer.step()  
+    print('The', i + 1, 'iteration train finished')
     correct = 0
     for step, (data, targets) in enumerate(test_loader):
         
@@ -139,7 +136,7 @@ for i in range(EPOCH):
         TestOutput = np.array(TestOutput)
         np.save('Testout%d.npy'%(i+1), TestOutput)
 
-    print('第', i + 1, '轮迭代loss = ', Sum / len(train_loader))
+    print('The', i + 1, ' iteration loss = ', Sum / len(train_loader))
     TrainLoss.append(Sum / len(train_loader))
     
 
