@@ -4,8 +4,8 @@ import matplotlib.pyplot as plt
 import cv2
 
 np.warnings.filterwarnings('ignore', category=np.VisibleDeprecationWarning)
-root = r"/home/kevin/桌面/Summer_Intern_Article1/Landmarks/Dataset/WFLW/WFLW_annotations/list_98pt_rect_attr_train_test"
-Train_root = r'/home/kevin/桌面/Summer_Intern_Article1/Landmarks/Dataset/WFLW/WFLW_images'
+root = r"/home/qufy620331060/qufy6_project/Landmarks/Dataset/WFLW/WFLW_annotations/list_98pt_rect_attr_train_test"
+Train_root = r'/home/qufy620331060/qufy6_project/Landmarks/Dataset/WFLW/WFLW_images'
 
 
 def get_coo(coo):
@@ -31,6 +31,7 @@ class LandmarksDataset(Dataset):
     def __init__(self, txt):
         with open(txt, 'r') as fh:
             landmks = []
+            idx = 0
             for line in fh:
                 line = line.strip('\n')
                 line = line.rstrip()
@@ -82,13 +83,13 @@ def vis_landmarks(img, landmarks):
     plt.show()
     return
 
-# train_landmarks = LandmarksDataset(txt=root + '/' + 'list_98pt_rect_attr_train.txt')
-# for i in range(10):
-#     img, landmarks = train_landmarks[i]
-#     vis_landmarks(img, landmarks)
+#train_landmarks = LandmarksDataset(txt=root + '/' + 'list_98pt_rect_attr_train.txt')
+#for i in range(10):
+#    img, landmarks = train_landmarks[i]
+#    vis_landmarks(img, landmarks)
 #
-# train_loader = DataLoader(dataset=train_landmarks, batch_size=15, shuffle=False)
-# for img, gt_lms in train_loader:
-#     print(img.shape, gt_lms.shape)
-#     print(img.max(), gt_lms.max())
-#     break
+#train_loader = DataLoader(dataset=train_landmarks, batch_size=15, shuffle=False)
+#for img, gt_lms in train_loader:
+#    print(img.shape, gt_lms.shape)
+#    print(img.max(), gt_lms.max())
+#    break
