@@ -5,7 +5,7 @@ import cv2
 
 np.warnings.filterwarnings('ignore', category=np.VisibleDeprecationWarning)
 root = r"/home/qufy620331060/qufy6_project/Landmarks/Dataset/WFLW/WFLW_annotations/list_98pt_rect_attr_train_test"
-Train_root = r'/home/qufy620331060/qufy6_project/Landmarks/Dataset/WFLW/WFLW_images'
+image_root = r'/home/qufy620331060/qufy6_project/Landmarks/Dataset/WFLW/WFLW_images'
 
 
 def get_coo(coo):
@@ -47,7 +47,7 @@ class LandmarksDataset(Dataset):
                     self.DataList[index][0][j] = float(self.DataList[index][0][j]) - y_min
 
     def __getitem__(self, index):
-        img_path, label = Train_root + '/' + self.DataList[index][2], self.DataList[index][0]
+        img_path, label = image_root + '/' + self.DataList[index][2], self.DataList[index][0]
         img = cv2.imread(img_path)
         x, y = get_coo(label)  # get coo
         x_min, y_min, x_max, y_max = get_face(self.DataList[index][1])
