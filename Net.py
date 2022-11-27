@@ -1,8 +1,7 @@
-import Loader
+
 import torch.nn as nn
 import torch.nn.functional as F
 
-root = Loader.root
 EPOCH = 30
 BATCH_SIZE = 15
 LR = 1E-2

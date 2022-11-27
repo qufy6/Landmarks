@@ -7,7 +7,6 @@ np.warnings.filterwarnings('ignore', category=np.VisibleDeprecationWarning)
 root = r"/home/qufy620331060/qufy6_project/Landmarks/Dataset/WFLW/WFLW_annotations/list_98pt_rect_attr_train_test"
 image_root = r'/home/qufy620331060/qufy6_project/Landmarks/Dataset/WFLW/WFLW_images'
 
-
 def get_coo(coo):
     x = []
     y = []
@@ -29,9 +28,10 @@ def get_face(loc):
 
 class LandmarksDataset(Dataset):
     def __init__(self, txt):
+        self.root = root
+        self.image_root = image_root
         with open(txt, 'r') as fh:
             landmks = []
-            idx = 0
             for line in fh:
                 line = line.strip('\n')
                 line = line.rstrip()
@@ -82,14 +82,3 @@ def vis_landmarks(img, landmarks):
     plt.scatter(x, y, s=30)
     plt.show()
     return
-
-#train_landmarks = LandmarksDataset(txt=root + '/' + 'list_98pt_rect_attr_train.txt')
-#for i in range(10):
-#    img, landmarks = train_landmarks[i]
-#    vis_landmarks(img, landmarks)
-#
-#train_loader = DataLoader(dataset=train_landmarks, batch_size=15, shuffle=False)
-#for img, gt_lms in train_loader:
-#    print(img.shape, gt_lms.shape)
-#    print(img.max(), gt_lms.max())
-#    break
