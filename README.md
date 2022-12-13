@@ -1,7 +1,7 @@
 # Landmarks
 This is a project including what I have learned.
 
-#Dataset
+# Dataset
 You need to mkdir a folder named 'Dataset' in Landmarks, and pur folder 'WLFW' in it.
 
 # Run
