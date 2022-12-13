@@ -2,7 +2,7 @@ import numpy as np
 from PIL import Image, ImageFilter
 import os
 import sys
-import Loader
+from torch.utils.data import DataLoader
 import _loader
 import _tools
 import logging
@@ -137,9 +137,8 @@ train_data = _loader.LandmarksDataset(os.path.join(_root.gen_data_wflw_root, 'WF
                                           transforms.RandomGrayscale(0.2),
                                           transforms.ToTensor(),
                                           normalize]))
-train_loader = Loader.DataLoader(train_data, batch_size=5, shuffle=True, num_workers=8,
+train_loader = DataLoader(train_data, batch_size=cfg.batch_size, shuffle=True, num_workers=8,
                                            pin_memory=True, drop_last=True)
-print(len(train_loader))
 
 _tools.train_model(net, train_loader, criterion_reg, optimizer, cfg.num_epochs, scheduler, save_dir, cfg.save_interval, device)
 

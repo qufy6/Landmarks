@@ -9,7 +9,8 @@ import torchvision.transforms as transforms
 from scipy.stats import norm
 from math import floor
 
-import Loader
+from torch.utils.data import DataLoader
+
 import _root
 import _tools
 import _preprocess
@@ -195,6 +196,6 @@ if __name__ == '__main__':
                                         transforms.ToTensor(),
                                         normalize])
                                     )
-    train_loader = Loader.DataLoader(dataset=traindataset, batch_size=20, shuffle=True)
+    train_loader = DataLoader(dataset=traindataset, batch_size=20, shuffle=True)
 
     pass
