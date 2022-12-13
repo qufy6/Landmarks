@@ -6,5 +6,7 @@ You need to mkdir a folder named 'Dataset' in Landmarks, and pur folder 'WLFW' i
 
 # Run
 First, you need to change _root.py to write your file location.
+
 Then, you can open ../experiences/resnet18_baseline.py to change super parameters.
+
 Finally, you can run train.py
