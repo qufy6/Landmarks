@@ -208,7 +208,7 @@ def gen_data_wflw(root_folder, data_name, target_size):
             else:
                 print('error!')
                 exit(0)
-    gen_meanface(root_folder, data_name)
+#     gen_meanface(root_folder, data_name)
 
 
 if __name__ == '__main__':
