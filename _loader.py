@@ -23,7 +23,7 @@ def get_coo(coo):
             x.append(float(coo[j]))
         else:
             y.append(float(coo[j]))
-    return x, y
+    return np.array(x), np.array(y)
 
 
 def random_translate(image, target):
@@ -155,8 +155,7 @@ class LandmarksDataset(data.Dataset):
 
         img_name, target = self.imgs[index]
 
-        img = Image.open(os.path.join(self.root, img_name)).convert('RGB')
-        print(img.shape)
+        img = Image.open(os.path.join(self.root, img_name)).convert('RGB') #(256, 256, 3)
         img, target = random_translate(img, target)
         img = random_occlusion(img)
         img, target = random_flip(img, target, self.points_flip)
@@ -169,7 +168,7 @@ class LandmarksDataset(data.Dataset):
         if self.target_transform is not None:
             target = self.target_transform(target)
         target_x, target_y = get_coo(target)
-        return img, target_x, target_y
+        return img, np.array(target_x), np.array(target_y)
 
     def __len__(self):
         return len(self.imgs)

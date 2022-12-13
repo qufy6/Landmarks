@@ -1,4 +1,5 @@
-
+import numpy as np
+from PIL import Image, ImageFilter
 import os
 import sys
 import Loader
@@ -122,8 +123,10 @@ else:
     optimizer = optim.Adam(net.parameters(), lr=cfg.init_lr, weight_decay=5e-4)
 scheduler = optim.lr_scheduler.MultiStepLR(optimizer, milestones=cfg.decay_steps, gamma=0.1)
 
-labels = _tools.get_label('train.txt'),  # 包含两个元素，分别表示图像文件名和目标信息（196）
-
+labels = _tools.get_label('train.txt') # 包含两个元素，分别表示图像文件名和目标信息（196）
+# print(np.array(labels).shape)
+# img = Image.open(os.path.join(os.path.join(_root.gen_data_wflw_root, 'WFLW', 'images_train'), labels[0][0][0])).convert('RGB')
+# print(np.array(img).shape)
 train_data = _loader.LandmarksDataset(os.path.join(_root.gen_data_wflw_root, 'WFLW', 'images_train'),
                                       labels,
                                       cfg.input_size,

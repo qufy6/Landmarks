@@ -21,7 +21,7 @@ def get_label(label_file, task_type=None):
         return labels
 
     labels_new = []
-    for label in labels:
+    for label in labels:#7500
         image_name = label[0]
         target = label[1:]
         target = np.array([float(x) for x in target])
@@ -29,6 +29,7 @@ def get_label(label_file, task_type=None):
             labels_new.append([image_name, target])
         else:
             labels_new.append([image_name, task_type, target])
+    # print(np.array(labels_new).shape)#(7500, 2)
     return labels_new
 
 def compute_loss_pip(outputs_local_x, outputs_local_y, labels_local_x, labels_local_y,  criterion_reg):
