@@ -137,7 +137,7 @@ train_data = _loader.LandmarksDataset(os.path.join(_root.gen_data_wflw_root, 'WF
                                           transforms.RandomGrayscale(0.2),
                                           transforms.ToTensor(),
                                           normalize]))
-train_loader = Loader.DataLoader(train_data, batch_size=cfg.batch_size, shuffle=True, num_workers=8,
+train_loader = Loader.DataLoader(train_data, batch_size=5, shuffle=True, num_workers=8,
                                            pin_memory=True, drop_last=True)
 print(len(train_loader))
 

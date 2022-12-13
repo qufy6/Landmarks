@@ -23,7 +23,7 @@ def get_coo(coo):
             x.append(float(coo[j]))
         else:
             y.append(float(coo[j]))
-    return np.array(x), np.array(y)
+    return x, y
 
 
 def random_translate(image, target):
