@@ -96,7 +96,8 @@ for label in labels:
     lms_gt = label[1]
     norm = np.linalg.norm(lms_gt.reshape(-1, 2)[norm_indices[0]] - lms_gt.reshape(-1, 2)[norm_indices[1]])
 
-    image_path = os.path.join(_root.gen_data_wflw_root, 'WFLW', 'images_test')
+    image_path = os.path.join(_root.gen_data_wflw_root, 'WFLW', 'images_test', image_name)
+    print(image_path)
     image = cv2.imread(image_path)
     image = cv2.resize(image, (cfg.input_size, cfg.input_size))
     inputs = Image.fromarray(image[:, :, ::-1].astype('uint8'), 'RGB')
@@ -126,12 +127,12 @@ print('Total inference time:', time_all)
 print('Image num:', len(labels))
 print('Average inference time:', time_all / len(labels))
 
-if cfg.det_head == 'pip':
-    print('nme: {}'.format(np.mean(nmes_merge)))
-    logging.info('nme: {}'.format(np.mean(nmes_merge)))
 
-    fr, auc = compute_fr_and_auc(nmes_merge)
-    print('fr : {}'.format(fr))
-    logging.info('fr : {}'.format(fr))
-    print('auc: {}'.format(auc))
-    logging.info('auc: {}'.format(auc))
+print('nme: {}'.format(np.mean(nmes_merge)))
+logging.info('nme: {}'.format(np.mean(nmes_merge)))
+
+fr, auc = compute_fr_and_auc(nmes_merge)
+print('fr : {}'.format(fr))
+logging.info('fr : {}'.format(fr))
+print('auc: {}'.format(auc))
+logging.info('auc: {}'.format(auc))
