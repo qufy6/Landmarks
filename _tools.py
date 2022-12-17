@@ -39,8 +39,10 @@ def compute_loss_pip(outputs_local_x, outputs_local_y, labels_local_x, labels_lo
     return loss_x, loss_y
 
 
-def train_model(net, train_loader, criterion_reg, optimizer, num_epochs, scheduler, save_dir, save_interval, device):
+def train_model(net, train_loader, criterion_reg, optimizer, num_epochs, scheduler, save_dir, device):
+    best_epoch_loss = 1000
     for epoch in range(num_epochs):
+        t = time.time()
         print('Epoch {}/{}'.format(epoch, num_epochs - 1))
         logging.info('Epoch {}/{}'.format(epoch, num_epochs - 1))
         print('-' * 10)
@@ -56,10 +58,7 @@ def train_model(net, train_loader, criterion_reg, optimizer, num_epochs, schedul
             output = net(img)  # (batchsize, 196)
             pred_x = output[:, 0: 98]
             pred_y = output[:, 98:196]
-            # pred_x = torch.FloatTensor(pred_x).to(device)
-            # pred_y = torch.FloatTensor(pred_y).to(device)
-            # print(pred_x.cpu().detach().numpy().shape)
-            loss_x, loss_y = compute_loss_pip(pred_x, pred_y, labels_x, labels_y, criterion_reg)
+            loss_x, loss_y = criterion_reg(pred_x, pred_y), criterion_reg(labels_x, labels_y)
             loss = loss_x + loss_y
             optimizer.zero_grad()
             loss.backward()
@@ -71,9 +70,15 @@ def train_model(net, train_loader, criterion_reg, optimizer, num_epochs, schedul
                     epoch, num_epochs - 1, i, len(train_loader) - 1, loss.item()))
             epoch_loss += loss.item()
         epoch_loss /= len(train_loader)
-        if epoch % (save_interval - 1) == 0 and epoch > 0:
-            filename = os.path.join(save_dir, 'epoch%d.pth' % epoch)
+        if epoch_loss < best_epoch_loss:
+            best_epoch_loss = epoch_loss
+            print("saving checkpoint for epoch ", epoch)
+            logging.info('saving checkpoint for epoch {:f} '.format(epoch))
+            filename = os.path.join(save_dir, 'best.pth')
             torch.save(net.state_dict(), filename)
-            print(filename, 'saved')
+        print('running time for one epoch in seconds: ', time.time() - t)
+        logging.info('running time for one epoch in seconds: {:f} '.format(time.time() - t))
+        print('epoch loss : ', epoch_loss)
+        logging.info('epoch loss :{:f} '.format(epoch_loss))
         scheduler.step()
     return net

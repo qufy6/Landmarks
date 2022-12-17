@@ -142,11 +142,10 @@ def gen_target_pip(target, meanface_indices, target_map, target_local_x, target_
 
 
 class LandmarksDataset(data.Dataset):
-    def __init__(self, root, imgs, input_size, num_lms, net_stride, points_flip, transform=None, target_transform=None):
+    def __init__(self, root, imgs, input_size, num_lms, points_flip, transform=None, target_transform=None):
         self.root = root
         self.imgs = imgs
         self.num_lms = num_lms
-        self.net_stride = net_stride
         self.points_flip = points_flip
         self.transform = transform
         self.target_transform = target_transform
