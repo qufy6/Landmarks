@@ -58,7 +58,7 @@ def train_model(net, train_loader, criterion_reg, optimizer, num_epochs, schedul
             output = net(img)  # (batchsize, 196)
             pred_x = output[:, 0: 98]
             pred_y = output[:, 98:196]
-            loss_x, loss_y = criterion_reg(pred_x, pred_y), criterion_reg(labels_x, labels_y)
+            loss_x, loss_y = criterion_reg(pred_x, labels_x), criterion_reg(pred_y, labels_y)
             loss = loss_x + loss_y
             optimizer.zero_grad()
             loss.backward()
