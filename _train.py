@@ -79,8 +79,8 @@ else:
 net = net.to(device)
 
 criterion_reg = None
-# criterion_reg = nn.L1Loss()
-criterion_reg = nn.MSELoss()
+criterion_reg = nn.L1Loss()
+# criterion_reg = nn.MSELoss()
 
 points_flip = None
 points_flip = [32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7,
